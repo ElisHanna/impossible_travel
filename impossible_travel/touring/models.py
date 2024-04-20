@@ -46,27 +46,25 @@ class Hotel(models.Model):
         return reverse('hotel-detail', args=[str(self.id)])
 
     
-class Entertaiment(models.Model):
+# class Entertaiment(models.Model):
 
-    name = models.CharField(max_length=50, help_text='Название отеля')
-    description = models.CharField(max_length=500, help_text='Описание')
-    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
-    cost = models.PositiveSmallIntegerField(help_text='Цена за ночь', null=True)   
+#     name = models.CharField(max_length=50, help_text='Название отеля')
+#     description = models.CharField(max_length=500, help_text='Описание')
+#     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
+#     cost = models.PositiveSmallIntegerField(help_text='Цена за ночь', null=True)   
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 class Tour(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный идентификатор тура")
-    hotel = models.ForeignKey('Hotel', on_delete=models.SET_NULL, null=True, blank=True)
+    #area = models.ForeignKey('Area', on_delete=models.CASCADE)
+    hotel = models.ForeignKey('Hotel', on_delete=models.SET_NULL, null=True)
     checkin_date = models.DateField(help_text='Дата заселения')
     checkout_date = models.DateField(help_text='Дата выезда')
-    entertaiments = models.ForeignKey('Entertaiment', help_text='Заказанные развлечения', on_delete=models.SET_NULL, null=True)
+    #entertaiments = models.ManyToManyField('Entertaiment', help_text='Заказанные развлечения')
     cost = models.PositiveSmallIntegerField(help_text='Итоговая стоимость')
 
     def __str__(self):
-        return self.id
-
-
-
+        return str(self.id)
