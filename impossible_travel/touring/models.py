@@ -66,4 +66,4 @@ class Tour(models.Model):
     cost = models.PositiveSmallIntegerField(help_text='Итоговая стоимость')
 
     def __str__(self):
-        return self.id
+        return str(self.id)
