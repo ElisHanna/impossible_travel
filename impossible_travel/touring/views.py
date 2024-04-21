@@ -20,3 +20,6 @@ def index(request):
 
 class DirectionListView(generic.ListView):
     model = Direction
+
+class DirectionDetailView(generic.DetailView):
+    model = Direction
