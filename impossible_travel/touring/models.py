@@ -5,6 +5,7 @@ import uuid
 class Direction(models.Model):
 
     name = models.CharField(max_length=50, help_text='Желаемая вселенная')
+    description = models.CharField(max_length=500, help_text='Описание вселенной', null=True)
 
     def __str__(self):
         return self.name

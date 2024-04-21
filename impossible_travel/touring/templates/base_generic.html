@@ -19,8 +19,10 @@
             <div class="col-sm-2">
                 {% block sidebar %}
                 <ul class="sidebar-nav">
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'index' %}">В начало</a></li>
                     <li><a href="{% url 'directions' %}">Вселенные</a></li>
+                    <li><a href="{% url 'areas' %}">Местность</a></li>
+                    <li><a href="{% url 'hotels' %}">Гостиницы</a></li>
                 </ul>
                 {% endblock %}
             </div>

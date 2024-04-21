@@ -23,3 +23,18 @@ class DirectionListView(generic.ListView):
 
 class DirectionDetailView(generic.DetailView):
     model = Direction
+
+class AreaListView(generic.ListView):
+    model = Area
+
+class AreaDetailView(generic.DetailView):
+    model = Area
+
+class HotelListView(generic.ListView):
+    model = Hotel
+
+class HotelDetailView(generic.DetailView):
+    model = Hotel
+
+class EntertaimentListView(generic.ListView):
+    model = Entertaiment

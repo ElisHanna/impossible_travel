@@ -8,7 +8,7 @@
     
           {% for direction in direction_list %}
           <li>
-            <a href="">{{ direction.name }}</a>
+            <a href="{{ direction.get_absolute_url }}">{{ direction.name }}</a>
           </li>
           {% endfor %}
     

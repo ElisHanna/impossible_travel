@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{ hotel.name }}</h1>
+
+<p><strong>Расположение:</strong> <a href="{% url 'direction-detail' hotel.area.direction.pk %}">{{ hotel.area.direction }}</a>, 
+    <a href="{% url 'area-detail' hotel.area.pk %}">{{ hotel.area }}</a></p>
+<p><strong>Описание:</strong> {{ hotel.description }}</p>
+<p><strong>Цена за ночь:</strong> {{ hotel.cost_per_night }} имперских кредитов</p>
+<p><strong>Имеются удобства:</strong> 
+    {% for commodity in hotel.commodity.all %} 
+        {{ commodity }} {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
+{% endblock %}
