@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views import generic
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
 
 def index(request):
@@ -16,3 +17,6 @@ def index(request):
                }
 
     return render(request, 'index.html', context=context)
+
+class DirectionListView(generic.ListView):
+    model = Direction
