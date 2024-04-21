@@ -5,6 +5,7 @@ import uuid
 class Direction(models.Model):
 
     name = models.CharField(max_length=50, help_text='Желаемая вселенная')
+    description = models.CharField(max_length=500, help_text='Описание вселенной', null=True)
 
     def __str__(self):
         return self.name
@@ -35,6 +36,7 @@ class Commodity(models.Model):
 class Hotel(models.Model):
 
     name = models.CharField(max_length=50, help_text='Название отеля')
+    area = models.ForeignKey('Area', on_delete=models.CASCADE, default=None)
     description = models.CharField(max_length=500, help_text='Описание')
     commodity = models.ManyToManyField('Commodity', help_text='Выберите доступные удобства')
     cost_per_night = models.PositiveSmallIntegerField(help_text='Цена за ночь')   

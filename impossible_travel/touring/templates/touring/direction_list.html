@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>Выберите вселенную на свой вкус:</h1>
+    
+        {% if direction_list %}
+        <ul>
+    
+          {% for direction in direction_list %}
+          <li>
+            <a href="{{ direction.get_absolute_url }}">{{ direction.name }}</a>
+          </li>
+          {% endfor %}
+    
+        </ul>
+        {% else %}
+          <p>Вселенные закрыты на ремонт</p>
+        {% endif %}
+    {% endblock %}

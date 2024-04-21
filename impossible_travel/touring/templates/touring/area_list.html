@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>Попробуйте отдых в самых живописных местах:</h1>
+    
+        {% if area_list %}
+        <ul>
+    
+          {% for area in area_list %}
+          <li>
+            <a href="{{ area.get_absolute_url }}">{{ area.name }}</a>, {{area.direction.name}}
+          </li>
+          {% endfor %}
+    
+        </ul>
+        {% else %}
+          <p>Местности закрыты на ремонт</p>
+        {% endif %}
+    {% endblock %}
