@@ -126,5 +126,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_SAVE_EVERY_REQUEST = True
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'logout'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
