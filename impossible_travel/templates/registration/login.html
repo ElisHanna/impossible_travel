@@ -36,7 +36,12 @@
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+<!-- <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p> -->
+<form action="{% url 'password_reset' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Не помню пароль</button>
+</form>
+
 <form method="post" action="{% url 'logout' %}">
  {% csrf_token %}
  <button type="submit">Выйти</button>   
