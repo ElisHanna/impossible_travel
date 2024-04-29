@@ -65,7 +65,7 @@ class Tour(models.Model):
     hotel = models.ForeignKey('Hotel', on_delete=models.SET_NULL, null=True, blank=True)
     checkin_date = models.DateField(help_text='Дата заселения')
     checkout_date = models.DateField(help_text='Дата выезда')
-    entertaiments = models.ForeignKey('Entertaiment', help_text='Заказанные развлечения', on_delete=models.SET_NULL, null=True)
+    entertaiments = models.ManyToManyField(Entertaiment, help_text='Заказанные развлечения')
     cost = models.PositiveSmallIntegerField(help_text='Итоговая стоимость')
     tourist = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 

@@ -6,7 +6,7 @@ admin.site.register(Commodity)
 admin.site.register(Direction)
 #admin.site.register(Entertaiment)
 #admin.site.register(Hotel)
-admin.site.register(Tour)
+#admin.site.register(Tour)
 
 @admin.register(Area)
 class AreaAdmin(admin.ModelAdmin):
@@ -22,3 +22,8 @@ class EntertaimentAdmin(admin.ModelAdmin):
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'area', 'cost_per_night')
     list_filter = ['area']
+
+@admin.register(Tour)
+class TourAdmin(admin.ModelAdmin):
+    list_display = ('tourist', 'hotel', 'checkin_date', 'checkout_date', 'cost', 'id')
+    list_filter = ('tourist', 'hotel')
