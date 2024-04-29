@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 import uuid
 
 class Direction(models.Model):
@@ -66,6 +67,7 @@ class Tour(models.Model):
     checkout_date = models.DateField(help_text='Дата выезда')
     entertaiments = models.ForeignKey('Entertaiment', help_text='Заказанные развлечения', on_delete=models.SET_NULL, null=True)
     cost = models.PositiveSmallIntegerField(help_text='Итоговая стоимость')
+    tourist = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.id)

@@ -42,9 +42,4 @@
     <button type="submit">Не помню пароль</button>
 </form>
 
-<form method="post" action="{% url 'logout' %}">
- {% csrf_token %}
- <button type="submit">Выйти</button>   
-</form>
-
 {% endblock %}

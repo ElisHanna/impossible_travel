@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
     """
