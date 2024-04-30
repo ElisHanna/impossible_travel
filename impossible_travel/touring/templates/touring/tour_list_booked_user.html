@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>Забронированные туры</h1>
+    
+        {% if tour_list %}
+        <ul>
+    
+          {% for tour in tour_list %}
+          <li>
+            <a href="{% url 'hotel-detail' tour.hotel.pk %}">{{tour.hotel.name}}</a> ({{tour.hotel.area}}), {{tour.checkin_date}} - {{tour.checkout_date}}
+          </li>
+          <h4>Вы выбрали варианты досуга:</h4>
+            {% for entertaiments in tour.entertaiments.all %}
+            <li>{{ entertaiments }} {% if not forloop.last %} {% endif %}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+    
+        {% else %}
+          <p>У вас нет забронированных туров.</p>
+        {% endif %}
+    {% endblock %}

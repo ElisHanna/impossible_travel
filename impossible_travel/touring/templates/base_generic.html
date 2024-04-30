@@ -25,6 +25,7 @@
                     <li><a href="{% url 'hotels' %}">Гостиницы</a></li>
                     {% if user.is_authenticated %}
                     <li>Вы вошли как: {{ user.get_username }}</li>
+                    <li><a href="{% url 'my-tours'%}">Мои туры</a></li>
                     <li><form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit">Выйти</button>   
