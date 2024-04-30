@@ -1,7 +1,10 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views import generic
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date
 
 def index(request):
     """
@@ -42,3 +45,10 @@ class HotelDetailView(generic.DetailView):
 
 class EntertaimentListView(generic.ListView):
     model = Entertaiment
+
+class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
+    model=Tour
+    template_name = 'touring/tour_list_booked_user.html'
+
+    def get_queryset(self):
+        return Tour.objects.filter(tourist=self.request.user).filter(checkout_date__gt=date.today()).order_by('checkin_date')
