@@ -33,6 +33,9 @@
                     {% else %}
                     <li><a href="{% url 'login' %}?next={{request.path}}">Войти</a></li>
                     {% endif %}
+                    {% if perms.touring.can_view %}
+                    <li><a href="{% url 'staff-tours' %}">Забронированные туры</a></li>
+                    {% endif %}
                 </ul>
                 {% endblock %}
             </div>

@@ -73,6 +73,10 @@ class Tour(models.Model):
     def __str__(self):
         return str(self.id)
     
+    class Meta:
+
+        permissions=(('can_view', 'Set all tours'),)
+    
     # def entertaiments(self):
     #     return (Entertaiment for Entertaiment in self.hotel.area)
     
