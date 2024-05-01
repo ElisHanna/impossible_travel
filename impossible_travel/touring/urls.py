@@ -10,4 +10,5 @@ urlpatterns = [
     re_path(r'^hotels/$', views.HotelListView.as_view(), name='hotels'),
     re_path(r'^hotel/(?P<pk>\d+)$', views.HotelDetailView.as_view(), name='hotel-detail'),
     re_path(r'^mytours/$', views.BookedToursByUserListView.as_view(), name='my-tours'),
+    re_path(r'^stafftours', views.TourListForStaffView.as_view(), name='staff-tours'),
 ]

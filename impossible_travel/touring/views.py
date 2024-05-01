@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views import generic
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from datetime import date
 
 def index(request):
@@ -52,3 +52,9 @@ class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Tour.objects.filter(tourist=self.request.user).filter(checkout_date__gt=date.today()).order_by('checkin_date')
+    
+class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
+    model=Tour
+    permission_required = 'touring.can_view'
+    template_name = 'touring/tour_list_staff.html'
+
