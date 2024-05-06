@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+      <h1>Отказаться от поездки</h1>
+    
+      <p>Вы действительно хотите отказаться от поездки?</p>
+    
+      <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Не хочу ехать">
+      </form>
+    {% endblock %}

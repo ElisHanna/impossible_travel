@@ -60,6 +60,7 @@ class Entertaiment(models.Model):
     def __str__(self):
         return self.name
     
+    
 class Tour(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный идентификатор тура")

@@ -1,10 +1,16 @@
 from typing import Any
+from django.utils.translation import gettext_lazy as _
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+import datetime
 from datetime import date
+from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
+from .forms import CreateTourFormUser
 
 def index(request):
     """
@@ -58,3 +64,17 @@ class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     permission_required = 'touring.can_view'
     template_name = 'touring/tour_list_staff.html'
 
+class TourCreate(FormView):
+    form_class = CreateTourFormUser
+    template_name = 'touring/create_tour_form.html'
+    success_url = reverse_lazy('my-tours')
+
+class TourUpdate(UpdateView):
+    model = Tour
+    fields = "__all__"
+    template_name = 'touring/update_tour_form.html'
+
+class TourDelete(DeleteView):
+    model = Tour
+    template_name = 'touring/tour_confirm_delete.html'
+    success_url = reverse_lazy('index')
