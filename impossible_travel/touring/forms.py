@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 import datetime
 from .models import Tour
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class CreateTourFormUser(ModelForm):
 
     def date_check(self):
@@ -33,7 +36,10 @@ class CreateTourFormUser(ModelForm):
                       'cost':_ ('')
                       }
         widgets = {
-            'checkin_date':AdminDateWidget(),
-            'checkout_date':AdminDateWidget(),
+            'checkin_date':DateInput(),
+            'checkout_date':DateInput(),
+        }
+        initial = {
+            
         }
     

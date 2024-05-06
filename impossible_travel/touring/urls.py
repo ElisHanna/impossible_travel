@@ -15,5 +15,4 @@ urlpatterns = [
     re_path(r'^tour/create/$', views.TourCreate.as_view(), name='tour_create'),
     re_path(r'^tour/(?P<pk>\d+)/update/$', views.TourUpdate.as_view(), name='tour_update'),
     re_path(r'^tour/(?P<pk>\d+)/delete/$', views.TourDelete.as_view(), name='tour_delete'),
-    path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog')
 ]
