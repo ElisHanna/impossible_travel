@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import User
 import datetime
 from datetime import date
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
@@ -64,13 +65,39 @@ class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     permission_required = 'touring.can_view'
     template_name = 'touring/tour_list_staff.html'
 
-class TourCreate(FormView):
+class TourCreate(CreateView):
+    model = Tour
     form_class = CreateTourFormUser
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'user_info':self.request.user
+        })
+        return kwargs
+    
+    def create_tour_user(request):
+        tour = Tour(request)
+        if request.method == 'POST':
+            form = CreateTourFormUser(request.POST)
+            if form.is_valid():
+                tour = form.save(commit=False)
+                tour.indate = form.cleaned_data['checkin_date']
+                tour.outdate = form.cleaned_data['checkout_date']
+                tour.tourist = User.username()
+                tour.save()
+                return HttpResponseRedirect(reverse('my-tours'))
+        else:
+            form = CreateTourFormUser()
+        return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})
+    
     template_name = 'touring/create_tour_form.html'
     success_url = reverse_lazy('my-tours')
 
+
 class TourUpdate(UpdateView):
     model = Tour
+
     fields = "__all__"
     template_name = 'touring/update_tour_form.html'
 

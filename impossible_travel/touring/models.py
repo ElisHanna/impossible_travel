@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 import uuid
-from datetime import date
 
 class Direction(models.Model):
 
