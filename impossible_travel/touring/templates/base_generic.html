@@ -27,16 +27,13 @@
                     <li>Вы вошли как: {{ user.get_username }}</li>
                     <li><a href="{% url 'my-tours'%}">Мои туры</a></li>
                     <li><a href="{% url 'tour_create' %}">Составить тур</a></li>
-                    <li><form method="post" action="{% url 'tour_create' %}">
-                        {% csrf_token %}
-                        <button type="submit">Составить тур</button>   
-                       </form></li>
                     <li><form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit">Выйти</button>   
                        </form></li>
                     {% else %}
                     <li><a href="{% url 'login' %}?next={{request.path}}">Войти</a></li>
+                    <li><a href="{% url 'register' %}">Регистрация</a></li>
                     {% endif %}
                     {% if perms.touring.can_view %}
                     <li><a href="{% url 'staff-tours' %}">Забронированные туры</a></li>

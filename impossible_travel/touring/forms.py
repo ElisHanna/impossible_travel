@@ -1,14 +1,15 @@
-from typing import Any, Mapping
+# from typing import Any, Mapping
 from django import forms
-from django.core.files.base import File
-from django.db.models.base import Model
+# from django.core.files.base import File
+# from django.db.models.base import Model
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
-from django.forms.utils import ErrorList
+# from django.forms.utils import ErrorList
 from django.utils.translation import gettext_lazy as _
 import datetime
 from .models import Tour
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -27,10 +28,8 @@ class CreateTourFormUser(ModelForm):
         cleaned_data = super().clean()
         checkin_date = cleaned_data['checkin_date']
         checkout_date = cleaned_data['checkout_date']
-        print(cleaned_data)
-        print('>>>>>>>> checkin_date = ',checkin_date)
+
         if checkin_date > checkout_date:
-            print('>>>>>>>>> checkin_date > checkout_date')
             raise ValidationError(_('Дата заезда не может быть позже даты выезда!'))
         
         if checkin_date < datetime.date.today():
@@ -39,8 +38,6 @@ class CreateTourFormUser(ModelForm):
         if checkout_date < datetime.date.today():
             raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
         
-        # return checkin_date, checkout_date
-    
     class Meta:
         model = Tour
         fields = ['hotel', 'checkin_date', 'checkout_date', 'entertaiments', 'cost']
@@ -66,3 +63,27 @@ class CreateTourFormUser(ModelForm):
             'chackout_date': datetime.date.today(),
         }
     
+class NewUserForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+        labels = {'username':_('Имя пользователя'), 
+                  'email':_('Адрес электронной почты'), 
+                  'password1':_('Придумайте пароль'), 
+                  'password2':_('Повторите пароль'), 
+                  }
+        help_texts = {'username':_('Имя пользователя'), 
+                    'email':_('Адрес электронной почты'), 
+                    'password1':_('Придумайте пароль'), 
+                    'password2':_('Повторите пароль'), 
+                      }
+
+    def save(self, commit=True):
+        user = super(NewUserForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user

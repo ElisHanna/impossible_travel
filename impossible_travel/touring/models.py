@@ -75,24 +75,6 @@ class Tour(models.Model):
     def __str__(self):
         return str(self.id)
     
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     print('>>>>>>>> cleaned_data = ', cleaned_data)
-    #     checkin_date = cleaned_data['checkin_date']
-    #     checkout_date = cleaned_data['checkout_date']
-    #     print(cleaned_data)
-    #     print('>>>>>>>> checkin_date = ',checkin_date)
-    #     if checkin_date > checkout_date:
-    #         raise ValidationError(_('Дата заезда не может быть позже даты выезда!'))
-        
-    #     if checkin_date < datetime.date.today():
-    #         raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
-        
-    #     if checkout_date < datetime.date.today():
-    #         raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
-        
-    #     return checkin_date, checkout_date
-    
     class Meta:
 
         permissions=(('can_view', 'Set all tours'),)

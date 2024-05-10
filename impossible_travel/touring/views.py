@@ -1,17 +1,18 @@
 from typing import Any
 from django.utils.translation import gettext_lazy as _
 from django.db.models.query import QuerySet
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
-import datetime
 from datetime import date
 from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
-from .forms import CreateTourFormUser
+from .forms import CreateTourFormUser, NewUserForm
+from django.contrib import messages
+from django.contrib.auth import login
 
 def index(request):
     """
@@ -77,7 +78,6 @@ class TourCreate(CreateView):
         return kwargs
     
     def create_tour_user(request):
-        print('>>>>>>>>СОЗДАНИЕ ТУРА')
         tour = Tour(request)
         if request.method == 'POST':
             form = CreateTourFormUser(request.POST)
@@ -104,3 +104,16 @@ class TourDelete(DeleteView):
     model = Tour
     template_name = 'touring/tour_confirm_delete.html'
     success_url = reverse_lazy('index')
+
+def register_request(request):
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            login(request, user)
+            messages.success(request, 'Вы успешно зарегистрировались')
+            return redirect('index')
+        else:
+            messages.error(request, 'Что-то пошло не так. Перепроверьте информацию.')
+    form = NewUserForm()
+    return render(request=request, template_name='new_user_registration.html', context={'register_form':form})
