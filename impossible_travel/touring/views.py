@@ -77,19 +77,18 @@ class TourCreate(CreateView):
         return kwargs
     
     def create_tour_user(request):
+        print('>>>>>>>>СОЗДАНИЕ ТУРА')
         tour = Tour(request)
         if request.method == 'POST':
             form = CreateTourFormUser(request.POST)
             if form.is_valid():
-                tour = form.save(commit=False)
-                tour.indate = form.cleaned_data['checkin_date']
-                tour.outdate = form.cleaned_data['checkout_date']
-                tour.tourist = User.username()
+                tour.checkin_date = form.cleaned_data['checkin_date']
+                tour.checkout_date = form.cleaned_data['checkout_date']
                 tour.save()
                 return HttpResponseRedirect(reverse('my-tours'))
-        else:
-            form = CreateTourFormUser()
-        return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})
+            else:
+                form = CreateTourFormUser()
+            return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})
     
     template_name = 'touring/create_tour_form.html'
     success_url = reverse_lazy('my-tours')

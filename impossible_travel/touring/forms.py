@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from django.utils.translation import gettext_lazy as _
-from datetime import date
+import datetime
 from .models import Tour
 from django.contrib.auth.models import User
 
@@ -23,17 +23,23 @@ class CreateTourFormUser(ModelForm):
         self.instance.tourist = self.user_info
         return super().save(*args, **kwargs)
     
-    def date_check(self):
-        indate = self.cleaned_data['checkin_date']
-        outdate = self.cleaned_data['checkout_date']
-
-        if indate > outdate:
+    def clean(self):
+        cleaned_data = super().clean()
+        checkin_date = cleaned_data['checkin_date']
+        checkout_date = cleaned_data['checkout_date']
+        print(cleaned_data)
+        print('>>>>>>>> checkin_date = ',checkin_date)
+        if checkin_date > checkout_date:
+            print('>>>>>>>>> checkin_date > checkout_date')
             raise ValidationError(_('Дата заезда не может быть позже даты выезда!'))
         
-        if indate < date.today() or outdate < date.today():
-            raise ValidationError(_('Даты заезда и выезда не могут быть в прошлом!'))
+        if checkin_date < datetime.date.today():
+            raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
         
-        return indate, outdate
+        if checkout_date < datetime.date.today():
+            raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
+        
+        # return checkin_date, checkout_date
     
     class Meta:
         model = Tour
@@ -56,7 +62,7 @@ class CreateTourFormUser(ModelForm):
             'checkout_date':DateInput(),
         }
         initial = {
-            'checkin_date': date.today(),
-            'chackout_date': date.today(),
+            'checkin_date': datetime.date.today(),
+            'chackout_date': datetime.date.today(),
         }
     
