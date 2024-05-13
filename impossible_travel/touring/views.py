@@ -1,16 +1,14 @@
-from typing import Any
 from django.utils.translation import gettext_lazy as _
-from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from datetime import date
-from .models import Area, Commodity, Direction, Entertaiment, Hotel, Tour
-from .forms import CreateTourFormUser, NewUserForm
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
+from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm
 from django.contrib import messages
 from django.contrib.auth import login
 
@@ -110,10 +108,33 @@ def register_request(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user=form.save()
+            profile = Profile.objects.create(user=user)
             login(request, user)
             messages.success(request, 'Вы успешно зарегистрировались')
             return redirect('index')
         else:
             messages.error(request, 'Что-то пошло не так. Перепроверьте информацию.')
     form = NewUserForm()
-    return render(request=request, template_name='new_user_registration.html', context={'register_form':form})
+    return render(request=request, template_name='registration/new_user_registration.html', context={'register_form':form})
+
+@login_required
+def profile_edit(request):
+    if request.method =='POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+        return render(request, 'registration/profile_edit.html', {'user_form': user_form, 'profile_form':profile_form})
+
+class ProfileDataViev(LoginRequiredMixin, generic.ListView):
+    model = Profile
+    template_name = 'accounts/my_profile.html'
+
+    def get_queryset(self):
+        print('>>>>>>>>>>>>>>', Profile.objects.filter(user=self.request.user))
+        return Profile.objects.filter(user=self.request.user)
+    

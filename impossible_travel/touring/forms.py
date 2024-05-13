@@ -7,6 +7,9 @@ from .models import Tour, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+class EmailInput(forms.EmailInput):
+    input_type = 'email'
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -72,11 +75,16 @@ class NewUserForm(UserCreationForm):
                     'password1': _('Придумайте пароль'), 
                     'password2': _('Повторите пароль'), 
                 }
-        help_texts = {'username':_(''), 
-                    'email':_(''), 
-                    'password1':_(''), 
-                    'password2':_(''), 
-                      }
+        
+        help_texts = {
+                        'username':_(''), 
+                        'email':_(''), 
+                        'password1':_(''), 
+                        'password2':_(''), 
+                    }
+        widgets = {
+                        'email': EmailInput
+                }
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
@@ -89,3 +97,8 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('date_of_birth', 'photo')

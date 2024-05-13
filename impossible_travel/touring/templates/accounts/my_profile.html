@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+    {% for profile in profile_list %}
+        <h1>Мой профиль</h1>
+        <p>Имя: {{ user.first_name }}</p>
+        <p>Фамилия: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Дата рождения: {{ profile.date_of_birth }}</p>
+        {% if profile.photo %}
+        <p>{{ profile.photo }}</p>
+        {% endif %}
+    {% endfor %}
+
+        {% if profile %}
+        <p>Имя: {{ profile.user.first_name }}</p>
+        <p>Фамилия: {{ profile.user.last_name }}</p>
+        <p>Email: {{ profile.user.email }}</p>
+        <p>Дата рождения: {{ profile.date_of_birth }}</p>
+        {% if profile.photo %}
+        <p>{{ profile.photo }}</p>
+        {% endif %}
+        {% endif %}
+        <a href="{% url 'profile_edit' %}">Изменить</a>
+    {% endblock %}
