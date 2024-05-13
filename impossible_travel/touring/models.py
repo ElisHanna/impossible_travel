@@ -2,9 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 import uuid
-import datetime
-from django.core.exceptions import ValidationError
-
+from django.conf import settings
 class Direction(models.Model):
 
     name = models.CharField(max_length=50, help_text='Желаемая вселенная')
@@ -84,3 +82,11 @@ class Tour(models.Model):
     
     # def cost(self):
     #     return int(self.hotel.cost_per_night) * int(((self.checkout_date - self.checkin_date).days)) + all(self.entertaiments.cost)
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_of_birth = models.DateField(blank=True, null=True)
+    photo = models.ImageField(upload_to='users/%Y/%m%d', blank=True)
+
+    def __str__(self):
+        return f'Профиль пользователя {self.user.username}'
