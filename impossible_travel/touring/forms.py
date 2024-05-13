@@ -1,15 +1,14 @@
-# from typing import Any, Mapping
 from django import forms
-# from django.core.files.base import File
-# from django.db.models.base import Model
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
-# from django.forms.utils import ErrorList
 from django.utils.translation import gettext_lazy as _
 import datetime
-from .models import Tour
+from .models import Tour, Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+
+class EmailInput(forms.EmailInput):
+    input_type = 'email'
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -64,22 +63,28 @@ class CreateTourFormUser(ModelForm):
         }
     
 class NewUserForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-
+    
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        
+        fields = ['username', 'email', 'password1', 'password2']
 
-        labels = {'username':_('Имя пользователя'), 
-                  'email':_('Адрес электронной почты'), 
-                  'password1':_('Придумайте пароль'), 
-                  'password2':_('Повторите пароль'), 
-                  }
-        help_texts = {'username':_('Имя пользователя'), 
-                    'email':_('Адрес электронной почты'), 
-                    'password1':_('Придумайте пароль'), 
-                    'password2':_('Повторите пароль'), 
-                      }
+        labels = {
+                    'username': _('Имя пользователя'), 
+                    'email': _('Адрес электронной почты'), 
+                    'password1': _('Придумайте пароль'), 
+                    'password2': _('Повторите пароль'), 
+                }
+        
+        help_texts = {
+                        'username':_(''), 
+                        'email':_(''), 
+                        'password1':_(''), 
+                        'password2':_(''), 
+                    }
+        widgets = {
+                        'email': EmailInput
+                }
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
@@ -87,3 +92,13 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('date_of_birth', 'photo')

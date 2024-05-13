@@ -1,12 +1,8 @@
 from django.contrib import admin
-from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment
+from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
 
-#admin.site.register(Area)
 admin.site.register(Commodity)
 admin.site.register(Direction)
-#admin.site.register(Entertaiment)
-#admin.site.register(Hotel)
-#admin.site.register(Tour)
 
 @admin.register(Area)
 class AreaAdmin(admin.ModelAdmin):
@@ -27,3 +23,7 @@ class HotelAdmin(admin.ModelAdmin):
 class TourAdmin(admin.ModelAdmin):
     list_display = ('tourist', 'hotel', 'checkin_date', 'checkout_date', 'cost', 'id')
     list_filter = ('tourist', 'hotel')
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'date_of_birth', 'photo')
