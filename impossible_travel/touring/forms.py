@@ -72,10 +72,10 @@ class NewUserForm(UserCreationForm):
                     'password1': _('Придумайте пароль'), 
                     'password2': _('Повторите пароль'), 
                 }
-        help_texts = {'username':_('gyhz'), 
-                    'email':_('gh'), 
-                    'password1':_('1'), 
-                    'password2':_('2'), 
+        help_texts = {'username':_(''), 
+                    'email':_(''), 
+                    'password1':_(''), 
+                    'password2':_(''), 
                       }
 
     def save(self, commit=True):
