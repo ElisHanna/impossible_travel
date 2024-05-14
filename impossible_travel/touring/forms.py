@@ -98,7 +98,26 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email']
 
+        labels = {
+                    'first_name': _('Имя'), 
+                    'last_name': _('Фамилия'), 
+                    'email': _('Email'), 
+                }
+        
+        widgets = {
+            'email':EmailInput
+        }
+
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('date_of_birth', 'photo')
+
+        labels = {
+            'date_of_birth':_('Дата рождения'),
+            'photo': _('Фото профиля')    
+        }
+
+        widgets = {
+            'date_of_birth': DateInput
+        }
