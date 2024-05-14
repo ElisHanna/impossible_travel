@@ -10,6 +10,7 @@ from datetime import date
 from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
 from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import login
 
 def index(request):
@@ -67,6 +68,9 @@ class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
 class TourCreate(CreateView):
     model = Tour
     form_class = CreateTourFormUser
+    template_name = 'touring/create_tour_form.html'
+    success_url = reverse_lazy('my-tours')
+    
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -75,7 +79,7 @@ class TourCreate(CreateView):
         })
         return kwargs
     
-    def create_tour_user(request):
+    def create_tour_user(self, request):
         tour = Tour(request)
         if request.method == 'POST':
             form = CreateTourFormUser(request.POST)
@@ -83,13 +87,11 @@ class TourCreate(CreateView):
                 tour.checkin_date = form.cleaned_data['checkin_date']
                 tour.checkout_date = form.cleaned_data['checkout_date']
                 tour.save()
+                messages.add_message(request, messages.SUCCESS, "Тур создан. Незабываемое путешествие уже ждёт вас!")
                 return HttpResponseRedirect(reverse('my-tours'))
             else:
                 form = CreateTourFormUser()
-            return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})
-    
-    template_name = 'touring/create_tour_form.html'
-    success_url = reverse_lazy('my-tours')
+            return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})  
 
 class TourUpdate(UpdateView):
     model = Tour
