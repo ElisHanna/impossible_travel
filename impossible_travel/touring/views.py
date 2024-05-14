@@ -91,7 +91,6 @@ class TourCreate(CreateView):
     template_name = 'touring/create_tour_form.html'
     success_url = reverse_lazy('my-tours')
 
-
 class TourUpdate(UpdateView):
     model = Tour
 
@@ -131,7 +130,6 @@ def profile_edit(request):
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'accounts/profile_edit.html', {'user_form': user_form, 'profile_form':profile_form})
     
-
 class ProfileDataViev(LoginRequiredMixin, generic.ListView):
     model = Profile
     template_name = 'accounts/my_profile.html'

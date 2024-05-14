@@ -38,6 +38,7 @@
                     {% endif %}
                     {% if perms.touring.can_view %}
                     <li><a href="{% url 'staff-tours' %}">Забронированные туры</a></li>
+                    <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
                     {% endif %}
                 </ul>
                 {% endblock %}
