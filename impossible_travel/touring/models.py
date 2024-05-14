@@ -19,6 +19,8 @@ class Area(models.Model):
     name = models.CharField(max_length=50, help_text='Желаемая местность')
     description = models.CharField(max_length=500, help_text='Описание')
     direction = models.ForeignKey('Direction', on_delete=models.SET_NULL, null=True)
+    entertaiments = models.ForeignKey('Entertaiment', on_delete=models.SET_NULL, null = True, related_name=)
+    
 
     def __str__(self):
         return self.name
@@ -90,4 +92,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'Профиль пользователя {self.user.username}'
-        # return f'Профиль пользователя {self.user.username}'
