@@ -1,4 +1,8 @@
+from typing import Any
 from django.contrib import admin
+from django.db.models.fields.related import ForeignKey
+from django.forms.models import ModelChoiceField
+from django.http.request import HttpRequest
 from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
 
 admin.site.register(Commodity)
@@ -21,8 +25,13 @@ class HotelAdmin(admin.ModelAdmin):
 
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ('tourist', 'hotel', 'checkin_date', 'checkout_date', 'cost', 'id')
+    list_display = ('tourist', 'hotel', 'checkin_date', 'checkout_date', 'cost', 'id', 'area')
     list_filter = ('tourist', 'hotel')
+
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == 'entertaiments':
+    #         kwargs['queryset'] = Entertaiment.objects.filter(area = request.area)
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):

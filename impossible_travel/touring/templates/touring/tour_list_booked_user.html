@@ -14,6 +14,7 @@
             {% for entertaiments in tour.entertaiments.all %}
             <li>{{ entertaiments }} {% if not forloop.last %} {% endif %}</li>
             {% endfor %}
+            <h5>К оплате: {{tour.cost}} имперских кредитов</h5>
           {% endfor %}
         </ul>
     
