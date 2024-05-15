@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS "auth_user_user_permissions" (
 	"id"	integer NOT NULL,
 	"user_id"	integer NOT NULL,
 	"permission_id"	integer NOT NULL,
-	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
 	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("permission_id") REFERENCES "auth_permission"("id") DEFERRABLE INITIALLY DEFERRED,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "django_admin_log" (
@@ -107,8 +107,8 @@ CREATE TABLE IF NOT EXISTS "touring_entertaiment" (
 	"description"	varchar(500) NOT NULL,
 	"cost"	smallint unsigned CHECK("cost" >= 0),
 	"area_id"	bigint,
-	FOREIGN KEY("area_id") REFERENCES "touring_area"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("area_id") REFERENCES "touring_area"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "touring_hotel" (
 	"id"	integer NOT NULL,
@@ -116,24 +116,24 @@ CREATE TABLE IF NOT EXISTS "touring_hotel" (
 	"description"	varchar(500) NOT NULL,
 	"cost_per_night"	smallint unsigned NOT NULL CHECK("cost_per_night" >= 0),
 	"area_id"	bigint NOT NULL,
-	FOREIGN KEY("area_id") REFERENCES "touring_area"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("area_id") REFERENCES "touring_area"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "touring_hotel_commodity" (
 	"id"	integer NOT NULL,
 	"hotel_id"	bigint NOT NULL,
 	"commodity_id"	bigint NOT NULL,
+	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("commodity_id") REFERENCES "touring_commodity"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("hotel_id") REFERENCES "touring_hotel"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	FOREIGN KEY("hotel_id") REFERENCES "touring_hotel"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "touring_profile" (
 	"id"	integer NOT NULL,
 	"date_of_birth"	date,
 	"photo"	varchar(100) NOT NULL,
 	"user_id"	integer NOT NULL UNIQUE,
-	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("user_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "touring_tour" (
 	"id"	char(32) NOT NULL,
@@ -143,18 +143,18 @@ CREATE TABLE IF NOT EXISTS "touring_tour" (
 	"tourist_id"	integer,
 	"area_id"	bigint,
 	"cost"	smallint unsigned CHECK("cost" >= 0),
+	PRIMARY KEY("id"),
 	FOREIGN KEY("hotel_id") REFERENCES "touring_hotel"("id") DEFERRABLE INITIALLY DEFERRED,
 	FOREIGN KEY("area_id") REFERENCES "touring_area"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("tourist_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED,
-	PRIMARY KEY("id")
+	FOREIGN KEY("tourist_id") REFERENCES "auth_user"("id") DEFERRABLE INITIALLY DEFERRED
 );
 CREATE TABLE IF NOT EXISTS "touring_tour_entertaiments" (
 	"id"	integer NOT NULL,
 	"tour_id"	char(32) NOT NULL,
 	"entertaiment_id"	bigint NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("tour_id") REFERENCES "touring_tour"("id") DEFERRABLE INITIALLY DEFERRED,
-	FOREIGN KEY("entertaiment_id") REFERENCES "touring_entertaiment"("id") DEFERRABLE INITIALLY DEFERRED
+	FOREIGN KEY("entertaiment_id") REFERENCES "touring_entertaiment"("id") DEFERRABLE INITIALLY DEFERRED,
+	FOREIGN KEY("tour_id") REFERENCES "touring_tour"("id") DEFERRABLE INITIALLY DEFERRED
 );
 INSERT INTO "django_migrations" ("id","app","name","applied") VALUES (1,'contenttypes','0001_initial','2024-04-21 18:09:37.194009'),
  (2,'auth','0001_initial','2024-04-21 18:09:37.215059'),
@@ -341,7 +341,10 @@ INSERT INTO "django_admin_log" ("id","object_id","object_repr","action_flag","ch
  (126,'08063a69-e5a8-4f29-856d-87b004b8e8da','08063a69-e5a8-4f29-856d-87b004b8e8da',3,'',12,1,'2024-05-14 16:48:01.554316'),
  (127,'f40fdc6b-6991-4602-a769-e9057c9d2f15','f40fdc6b-6991-4602-a769-e9057c9d2f15',1,'[{"added": {}}]',12,1,'2024-05-14 17:29:20.668578'),
  (128,'b3c64d76-2608-41da-8a01-b6f28a828888','b3c64d76-2608-41da-8a01-b6f28a828888',1,'[{"added": {}}]',12,1,'2024-05-14 17:38:41.927209'),
- (129,'dff3488b-a9a9-4740-b136-5be9719e5b17','dff3488b-a9a9-4740-b136-5be9719e5b17',1,'[{"added": {}}]',12,1,'2024-05-14 17:41:11.184260');
+ (129,'dff3488b-a9a9-4740-b136-5be9719e5b17','dff3488b-a9a9-4740-b136-5be9719e5b17',1,'[{"added": {}}]',12,1,'2024-05-14 17:41:11.184260'),
+ (130,'4','Sergio',3,'',4,1,'2024-05-15 16:16:02.879282'),
+ (131,'3','Профиль пользователя admin',1,'[{"added": {}}]',13,1,'2024-05-15 16:19:53.864826'),
+ (132,'4','Профиль пользователя Agent',1,'[{"added": {}}]',13,1,'2024-05-15 16:20:09.587227');
 INSERT INTO "django_content_type" ("id","app_label","model") VALUES (1,'admin','logentry'),
  (2,'auth','permission'),
  (3,'auth','group'),
@@ -410,11 +413,12 @@ INSERT INTO "auth_permission" ("id","content_type_id","codename","name") VALUES 
  (53,13,'view_profile','Can view profile');
 INSERT INTO "auth_group" ("id","name") VALUES (1,'Agency customer'),
  (2,'Tour Agent');
-INSERT INTO "auth_user" ("id","password","last_login","is_superuser","username","last_name","email","is_staff","is_active","date_joined","first_name") VALUES (1,'pbkdf2_sha256$720000$ppMwbdJbndjzrLCvHD1a3w$hYo8oHdf4gCwUEcWDuTwbywho5JhEkhut/zbPNKiztc=','2024-05-14 16:45:17.070861',1,'admin','','admin@admin.ru',1,1,'2024-04-21 18:10:21.590192',''),
- (2,'pbkdf2_sha256$720000$NpGxXAgsxywIywNqwgs0Zw$p5TuxlKjyfKkoOtAqpU1QIgfmywy37mzHI26AHeQYSY=','2024-05-14 17:46:44.565856',0,'Anna','Elis','apelbsinka48@gmail.com',0,1,'2024-04-27 15:54:21','Anna'),
- (3,'pbkdf2_sha256$720000$xYn8wQngYJPZm87ltxARTn$CIAudBkR94S6ZpKN2fRM/Kw1MLVITPEHgx0+LDXh4yw=','2024-05-10 14:25:47.748109',0,'Agent','Agent','',1,1,'2024-04-27 16:04:49','Agent'),
- (4,'pbkdf2_sha256$720000$B2LCW1d9STXRh1baQPUwgr$TCHnL21gnDvfG4XBboP0keH6FXpcGEPbNOJU5FbT56k=','2024-05-14 17:50:00.600449',0,'Sergio','','kunicasbumerangom@gmail.com',0,1,'2024-05-10 17:43:51.387077','');
-INSERT INTO "django_session" ("session_key","session_data","expire_date") VALUES ('cy8f2ooqrfu8dlbb4rvppncwikw0256r','.eJxVjDsOgzAQBe-ydWQZ1sYsZfqcwVr_gvMxEoY0Ue4ekGhoZ-a9L5T1bT-55qXCgBewvC6jXWucbQ4wgIITc-yfsewiPLjcJ-GnsszZiT0Rh63iNoX4uh7t6WDkOm5rRwklRm5I9w0F9J1qdEdR92QCJq0McicNB61aUuR6GZ1L3qOkjcgWfn9qzDwj:1s5UOI:xuEgN642n01J-MjBrmK2lvqLy-YUkW0UD4Q1CJaseiA','2024-05-24 17:50:42.893623');
+INSERT INTO "auth_user" ("id","password","last_login","is_superuser","username","last_name","email","is_staff","is_active","date_joined","first_name") VALUES (1,'pbkdf2_sha256$720000$ppMwbdJbndjzrLCvHD1a3w$hYo8oHdf4gCwUEcWDuTwbywho5JhEkhut/zbPNKiztc=','2024-05-15 16:21:29.441205',1,'admin','','admin@admin.ru',1,1,'2024-04-21 18:10:21.590192',''),
+ (2,'pbkdf2_sha256$720000$NpGxXAgsxywIywNqwgs0Zw$p5TuxlKjyfKkoOtAqpU1QIgfmywy37mzHI26AHeQYSY=','2024-05-15 16:33:31.681987',0,'Anna','Elis','apelbsinka48@gmail.com',0,1,'2024-04-27 15:54:21','Anna'),
+ (3,'pbkdf2_sha256$720000$xYn8wQngYJPZm87ltxARTn$CIAudBkR94S6ZpKN2fRM/Kw1MLVITPEHgx0+LDXh4yw=','2024-05-15 16:20:28.965908',0,'Agent','Agent','',1,1,'2024-04-27 16:04:49','Agent'),
+ (5,'pbkdf2_sha256$720000$ARUs2wCSdlhd3hW09zsrvZ$1UjI+ns3vhxgZuwDtIm20TlhM2Me7UQKM2uW+Afh9Bo=','2024-05-15 16:16:56.264036',0,'Serg','Елисеев','serg@serg.by',0,1,'2024-05-15 16:16:55.793593','Сергей');
+INSERT INTO "django_session" ("session_key","session_data","expire_date") VALUES ('cy8f2ooqrfu8dlbb4rvppncwikw0256r','.eJxVjDsOgzAQBe-ydWQZ1sYsZfqcwVr_gvMxEoY0Ue4ekGhoZ-a9L5T1bT-55qXCgBewvC6jXWucbQ4wgIITc-yfsewiPLjcJ-GnsszZiT0Rh63iNoX4uh7t6WDkOm5rRwklRm5I9w0F9J1qdEdR92QCJq0McicNB61aUuR6GZ1L3qOkjcgWfn9qzDwj:1s5UOI:xuEgN642n01J-MjBrmK2lvqLy-YUkW0UD4Q1CJaseiA','2024-05-24 17:50:42.893623'),
+ ('yq1phcarpnz3svxoor7cr4odh07kvzop','.eJxVjDkOgzAUBe_iOrIM2GYp0-cM1t8cnMVIGNJEuXtAokjaN_PmrQKsyxjWInNIrAZVq9PvhkB3yTvgG-TrpGnKy5xQ74o-aNGXieVxPty_wAhl3N6dAYTKOWm62JAgtcYKGGN76x0ajHUfyTN67-poWGJLLF1L0gNHQLNF8_oMr1TSUtRQfb6Cij53:1s7HZL:iQDhFOHPhhLZiI5J5d94aru9ReK1wKnsVq1FVi6i8uo','2024-05-29 16:33:31.702818');
 INSERT INTO "touring_commodity" ("id","name") VALUES (1,'Фен'),
  (2,'Полотенца'),
  (3,'Горячая вода'),
@@ -462,12 +466,15 @@ INSERT INTO "touring_hotel_commodity" ("id","hotel_id","commodity_id") VALUES (1
  (17,3,16),
  (18,3,17),
  (19,3,18);
-INSERT INTO "touring_profile" ("id","date_of_birth","photo","user_id") VALUES (1,'1951-03-31','',2);
+INSERT INTO "touring_profile" ("id","date_of_birth","photo","user_id") VALUES (1,'1951-03-31','',2),
+ (2,'2002-02-07','',5),
+ (3,'2024-05-15','',1),
+ (4,'2024-05-03','',3);
 INSERT INTO "touring_tour" ("id","checkin_date","checkout_date","hotel_id","tourist_id","area_id","cost") VALUES ('f40fdc6b69914602a769e9057c9d2f15','2024-05-15','2024-05-16',1,2,2,NULL),
  ('b3c64d76260841da8a01b6f28a828888','2024-05-14','2024-05-17',2,2,1,NULL),
  ('dff3488ba9a94740b1365be9719e5b17','2024-05-14','2024-05-17',2,2,1,NULL),
  ('9f08a8730c7742d2b73d9dbad763832a','2024-05-18','2024-05-24',1,2,NULL,NULL),
- ('d3613674cc4942c6a91c4e9c95922274','2024-05-17','2024-06-02',1,4,NULL,NULL);
+ ('d3613674cc4942c6a91c4e9c95922274','2024-05-17','2024-06-02',1,NULL,NULL,NULL);
 INSERT INTO "touring_tour_entertaiments" ("id","tour_id","entertaiment_id") VALUES (1,'b3c64d76260841da8a01b6f28a828888',8),
  (2,'b3c64d76260841da8a01b6f28a828888',10),
  (3,'dff3488ba9a94740b1365be9719e5b17',8),
