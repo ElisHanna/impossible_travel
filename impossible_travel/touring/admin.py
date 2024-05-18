@@ -37,6 +37,6 @@ class TourAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_of_birth')
-    readonly_fields = ['photo']
-    def photo(self, obj):
+    readonly_fields = ['preview']
+    def preview(self, obj):
         return mark_safe(f'<img src="{obj.photo.url}" width="100" height="100">')
