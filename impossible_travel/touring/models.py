@@ -79,9 +79,6 @@ class Tour(models.Model):
 
         permissions=(('can_view', 'Set all tours'),)
     
-    # def entertaiments(self):
-    #     return (Entertaiment for Entertaiment in self.hotel.area)
-    
     def cost(self):
 
         total_ents_cost = 0
@@ -96,4 +93,5 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to='users/%Y/%m%d', blank=True)
 
     def __str__(self):
+        
         return f'Профиль пользователя {self.user.username}'

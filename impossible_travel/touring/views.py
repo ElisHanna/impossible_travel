@@ -7,7 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
 from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -87,7 +87,6 @@ class TourCreate(CreateView):
                 tour.checkin_date = form.cleaned_data['checkin_date']
                 tour.checkout_date = form.cleaned_data['checkout_date']
                 tour.save()
-                messages.add_message(request, messages.SUCCESS, "Тур создан. Незабываемое путешествие уже ждёт вас!")
                 return HttpResponseRedirect(reverse('my-tours'))
             else:
                 form = CreateTourFormUser()
@@ -132,10 +131,20 @@ def profile_edit(request):
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'accounts/profile_edit.html', {'user_form': user_form, 'profile_form':profile_form})
     
-class ProfileDataViev(LoginRequiredMixin, generic.ListView):
-    model = Profile
-    template_name = 'accounts/my_profile.html'
-
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+@login_required
+def my_profile(request):
+    
+    profile = Profile.objects.filter(user=request.user)
+    first_name = profile[0].user.first_name
+    last_name = profile[0].user.last_name
+    email = profile[0].user.email
+    date_of_birth = profile[0].date_of_birth
+    photo = profile[0].photo
+    context = {'first_name' : first_name,
+               'last_name' : last_name,
+               'email' : email,
+               'date_of_birth' : date_of_birth,
+               'photo' : photo,
+               }
+    return render(request, context=context, template_name='accounts/my_profile.html')
     
