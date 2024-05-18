@@ -3,7 +3,11 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 import uuid
 from django.conf import settings
+
 class Direction(models.Model):
+    """
+    Модель вселенной
+    """
 
     name = models.CharField(max_length=50, help_text='Желаемая вселенная')
     description = models.CharField(max_length=500, help_text='Описание вселенной', null=True)
@@ -15,6 +19,9 @@ class Direction(models.Model):
         return reverse('direction-detail', args=[str(self.id)])
 
 class Area(models.Model):
+    """
+    Модель местности
+    """
 
     name = models.CharField(max_length=50, help_text='Желаемая местность')
     description = models.CharField(max_length=500, help_text='Описание')
@@ -28,14 +35,19 @@ class Area(models.Model):
         return reverse('area-detail', args=[str(self.id)])
 
 class Commodity(models.Model):
+    """
+    Модель удобств в гостинице
+    """
 
     name = models.CharField(max_length=30, help_text='Доступные удобства')
 
     def __str__(self):
         return self.name
 
-
 class Hotel(models.Model):
+    """
+    Модель гостиницы
+    """
 
     name = models.CharField(max_length=50, help_text='Название отеля')
     area = models.ForeignKey('Area', on_delete=models.CASCADE, default=None)
@@ -51,6 +63,9 @@ class Hotel(models.Model):
 
     
 class Entertaiment(models.Model):
+    """
+    Модель вариантов досуга
+    """
 
     name = models.CharField(max_length=50, help_text='Название отеля')
     description = models.CharField(max_length=500, help_text='Описание')
@@ -62,6 +77,9 @@ class Entertaiment(models.Model):
     
     
 class Tour(models.Model):
+    """
+    Модель тура
+    """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный идентификатор тура")
     area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
@@ -88,6 +106,9 @@ class Tour(models.Model):
         return self.hotel.cost_per_night * ((self.checkout_date - self.checkin_date).days) + total_ents_cost
 
 class Profile(models.Model):
+    """
+    Модель профиля
+    """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='media/users_photos', blank=True)

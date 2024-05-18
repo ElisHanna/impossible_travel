@@ -8,13 +8,22 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 class EmailInput(forms.EmailInput):
+    """
+    Класс для подключения виджета
+    """
     input_type = 'email'
 
 class DateInput(forms.DateInput):
+    """
+    Класс для подключения виджета
+    """
     input_type = 'date'
 
 class CreateTourFormUser(ModelForm):
-    
+    """
+    Форма для создания тура пользователем
+    """
+    # Функции для автоматического сохранения имени пользователя в соответствующем поле
     def __init__(self, user_info, *args, **kwargs):
         self.user_info = user_info
         super().__init__(*args, **kwargs)
@@ -61,6 +70,9 @@ class CreateTourFormUser(ModelForm):
         }
     
 class NewUserForm(UserCreationForm):
+    """
+    Форма для регистрации нового пользователя
+    """
     
     class Meta:
         model = User
@@ -92,6 +104,9 @@ class NewUserForm(UserCreationForm):
         return user
     
 class UserEditForm(forms.ModelForm):
+    """
+    Изменение содержимого полей модели User
+    """
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
@@ -107,6 +122,9 @@ class UserEditForm(forms.ModelForm):
         }
 
 class ProfileEditForm(forms.ModelForm):
+    """
+    Изменение содержимого полей модели Profile
+    """
 
     class Meta:
         model = Profile
@@ -122,6 +140,9 @@ class ProfileEditForm(forms.ModelForm):
         }
 
 class CreateTourFormStaff(ModelForm):
+    """
+    Форма для создания тура персоналом для клиента
+    """
         
     def clean(self):
         cleaned_data = super().clean()

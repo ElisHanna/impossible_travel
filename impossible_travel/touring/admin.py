@@ -1,8 +1,7 @@
-from typing import Any
+"""
+Регистрация моделей и их отображение в админ-панели
+"""
 from django.contrib import admin
-from django.db.models.fields.related import ForeignKey
-from django.forms.models import ModelChoiceField
-from django.http.request import HttpRequest
 from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
 from django.utils.safestring import mark_safe
 
@@ -28,11 +27,6 @@ class HotelAdmin(admin.ModelAdmin):
 class TourAdmin(admin.ModelAdmin):
     list_display = ('tourist', 'hotel', 'checkin_date', 'checkout_date', 'cost', 'id', 'area')
     list_filter = ('tourist', 'hotel')
-
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     if db_field.name == 'entertaiments':
-    #         kwargs['queryset'] = Entertaiment.objects.filter(area = request.area)
-    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
