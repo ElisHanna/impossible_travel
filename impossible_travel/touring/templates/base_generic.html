@@ -8,8 +8,7 @@
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    {% load static %}
+     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
@@ -33,7 +32,7 @@
                         <button type="submit">Выйти</button>   
                        </form></li>
                     {% else %}
-                    <li><a href="{% url 'login' %}?next={{request.path}}">Войти</a></li>
+                    <li><a href="{% url 'login' %}">Войти</a></li>
                     <li><a href="{% url 'register' %}">Регистрация</a></li>
                     {% endif %}
                     {% if perms.touring.can_view %}
@@ -44,6 +43,7 @@
                 {% endblock %}
             </div>
             <div class="col-sm-10 ">
+                {% include "messages.html" %}
                 {% block content %}{% endblock %}
             </div>
         </div>

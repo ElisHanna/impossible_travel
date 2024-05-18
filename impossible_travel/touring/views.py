@@ -7,9 +7,10 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
 from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import login
 
 def index(request):
@@ -67,6 +68,9 @@ class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
 class TourCreate(CreateView):
     model = Tour
     form_class = CreateTourFormUser
+    template_name = 'touring/create_tour_form.html'
+    success_url = reverse_lazy('my-tours')
+    
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -75,7 +79,7 @@ class TourCreate(CreateView):
         })
         return kwargs
     
-    def create_tour_user(request):
+    def create_tour_user(self, request):
         tour = Tour(request)
         if request.method == 'POST':
             form = CreateTourFormUser(request.POST)
@@ -86,10 +90,7 @@ class TourCreate(CreateView):
                 return HttpResponseRedirect(reverse('my-tours'))
             else:
                 form = CreateTourFormUser()
-            return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})
-    
-    template_name = 'touring/create_tour_form.html'
-    success_url = reverse_lazy('my-tours')
+            return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})  
 
 class TourUpdate(UpdateView):
     model = Tour
@@ -130,10 +131,20 @@ def profile_edit(request):
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'accounts/profile_edit.html', {'user_form': user_form, 'profile_form':profile_form})
     
-class ProfileDataViev(LoginRequiredMixin, generic.ListView):
-    model = Profile
-    template_name = 'accounts/my_profile.html'
-
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+@login_required
+def my_profile(request):
+    
+    profile = Profile.objects.filter(user=request.user)
+    first_name = profile[0].user.first_name
+    last_name = profile[0].user.last_name
+    email = profile[0].user.email
+    date_of_birth = profile[0].date_of_birth
+    photo = profile[0].photo
+    context = {'first_name' : first_name,
+               'last_name' : last_name,
+               'email' : email,
+               'date_of_birth' : date_of_birth,
+               'photo' : photo,
+               }
+    return render(request, context=context, template_name='accounts/my_profile.html')
     

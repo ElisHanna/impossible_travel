@@ -19,6 +19,7 @@ class Area(models.Model):
     name = models.CharField(max_length=50, help_text='Желаемая местность')
     description = models.CharField(max_length=500, help_text='Описание')
     direction = models.ForeignKey('Direction', on_delete=models.SET_NULL, null=True)
+    
 
     def __str__(self):
         return self.name
@@ -63,6 +64,7 @@ class Entertaiment(models.Model):
 class Tour(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный идентификатор тура")
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.SET_NULL, null=True, blank=True)
     checkin_date = models.DateField(help_text='Дата заселения')
     checkout_date = models.DateField(help_text='Дата выезда')
@@ -77,11 +79,13 @@ class Tour(models.Model):
 
         permissions=(('can_view', 'Set all tours'),)
     
-    # def entertaiments(self):
-    #     return (Entertaiment for Entertaiment in self.hotel.area)
-    
-    # def cost(self):
-    #     return int(self.hotel.cost_per_night) * int(((self.checkout_date - self.checkin_date).days)) + all(self.entertaiments.cost)
+    def cost(self):
+
+        total_ents_cost = 0
+        for entertaiment in self.entertaiments.all():
+            total_ents_cost += entertaiment.cost
+
+        return self.hotel.cost_per_night * ((self.checkout_date - self.checkin_date).days) + total_ents_cost
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -89,5 +93,5 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to='users/%Y/%m%d', blank=True)
 
     def __str__(self):
+        
         return f'Профиль пользователя {self.user.username}'
-        # return f'Профиль пользователя {self.user.username}'

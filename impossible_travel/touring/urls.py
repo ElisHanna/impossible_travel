@@ -16,5 +16,5 @@ urlpatterns = [
     re_path(r'^tour/(?P<pk>\d+)/delete/$', views.TourDelete.as_view(), name='tour_delete'),
     re_path(r'^register/$', views.register_request, name='register'),
     re_path(r'^edit/$', views.profile_edit, name='profile_edit'),
-    re_path(r'^myprofile/$', views.ProfileDataViev.as_view(), name='my_profile'),
+    path('myprofile', views.my_profile, name='my_profile'),
 ]

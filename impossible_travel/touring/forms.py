@@ -39,19 +39,19 @@ class CreateTourFormUser(ModelForm):
         
     class Meta:
         model = Tour
-        fields = ['hotel', 'checkin_date', 'checkout_date', 'entertaiments', 'cost']
+        fields = ['hotel', 'checkin_date', 'checkout_date', 'entertaiments']
 
         labels = {'hotel':_('Выберите гостиницу'), 
                   'checkin_date':_('Дата заезда'), 
                   'checkout_date':_('Дата выезда'), 
                   'entertaiments':_('Выберите варианты досуга'), 
-                  'cost':_('Итоговая стоимость'),
+                #   'cost':_('Итоговая стоимость'),
                   }
         help_texts = {'hotel':_(''), 
                       'checkin_date':_(''), 
                       'checkout_date':_(''), 
                       'entertaiments':_(''), 
-                      'cost':_ ('')
+                    #   'cost':_ ('')
                       }
         widgets = {
             'checkin_date':DateInput(),

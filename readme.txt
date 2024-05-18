@@ -6,4 +6,4 @@ python manage.py makemigrations
 python manage.py migrate  
 python manage.py createsuperuser
 D:\Anna_python\impossible_travel\impossible_travel>
-D:\Anna_python\impossible_travel\impossible_travel>python manage.py runserver
+D:\Anna_python\impossible_travel\impossible_travel\python manage.py runserver
