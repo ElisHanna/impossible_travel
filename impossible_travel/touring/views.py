@@ -95,13 +95,14 @@ class TourCreate(CreateView):
 class TourUpdate(UpdateView):
     model = Tour
 
-    fields = "__all__"
+    fields = ['hotel', 'checkin_date', 'checkout_date', 'entertaiments']
     template_name = 'touring/update_tour_form.html'
+    success_url = reverse_lazy('my-tours')
 
 class TourDelete(DeleteView):
     model = Tour
     template_name = 'touring/tour_confirm_delete.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('my-tours')
     
 
 def register_request(request):
