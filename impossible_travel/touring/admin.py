@@ -4,6 +4,7 @@ from django.db.models.fields.related import ForeignKey
 from django.forms.models import ModelChoiceField
 from django.http.request import HttpRequest
 from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
+from django.utils.safestring import mark_safe
 
 admin.site.register(Commodity)
 admin.site.register(Direction)
@@ -35,4 +36,7 @@ class TourAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'date_of_birth', 'photo')
+    list_display = ('user', 'date_of_birth')
+    readonly_fields = ['photo']
+    def photo(self, obj):
+        return mark_safe(f'<img src="{obj.photo.url}" width="100" height="100">')
