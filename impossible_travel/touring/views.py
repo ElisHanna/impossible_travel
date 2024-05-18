@@ -102,6 +102,7 @@ class TourDelete(DeleteView):
     model = Tour
     template_name = 'touring/tour_confirm_delete.html'
     success_url = reverse_lazy('index')
+    
 
 def register_request(request):
     if request.method == 'POST':

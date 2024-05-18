@@ -15,6 +15,7 @@
             <li>{{ entertaiments }} {% if not forloop.last %} {% endif %}</li>
             {% endfor %}
             <h5>К оплате: {{tour.cost}} имперских кредитов</h5>
+            <a href="{% url 'tour_delete' tour.pk %}"> Удалить тур </a>
           {% endfor %}
         </ul>
     
