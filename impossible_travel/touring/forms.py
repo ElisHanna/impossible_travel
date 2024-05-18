@@ -45,13 +45,11 @@ class CreateTourFormUser(ModelForm):
                   'checkin_date':_('Дата заезда'), 
                   'checkout_date':_('Дата выезда'), 
                   'entertaiments':_('Выберите варианты досуга'), 
-                #   'cost':_('Итоговая стоимость'),
                   }
         help_texts = {'hotel':_(''), 
                       'checkin_date':_(''), 
                       'checkout_date':_(''), 
                       'entertaiments':_(''), 
-                    #   'cost':_ ('')
                       }
         widgets = {
             'checkin_date':DateInput(),
@@ -109,6 +107,7 @@ class UserEditForm(forms.ModelForm):
         }
 
 class ProfileEditForm(forms.ModelForm):
+
     class Meta:
         model = Profile
         fields = ('date_of_birth', 'photo')
@@ -120,4 +119,44 @@ class ProfileEditForm(forms.ModelForm):
 
         widgets = {
             'date_of_birth': DateInput
+        }
+
+class CreateTourFormStaff(ModelForm):
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        checkin_date = cleaned_data['checkin_date']
+        checkout_date = cleaned_data['checkout_date']
+
+        if checkin_date > checkout_date:
+            raise ValidationError(_('Дата заезда не может быть позже даты выезда!'))
+        
+        if checkin_date < datetime.date.today():
+            raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
+        
+        if checkout_date < datetime.date.today():
+            raise ValidationError(_('Дата заезда и выезда не может быть в прошлом!'))
+        
+    class Meta:
+        model = Tour
+        fields = ['tourist' ,'hotel', 'checkin_date', 'checkout_date', 'entertaiments']
+
+        labels = {'tourist':_('Выберите пользователя'),
+                  'hotel':_('Выберите гостиницу'), 
+                  'checkin_date':_('Дата заезда'), 
+                  'checkout_date':_('Дата выезда'), 
+                  'entertaiments':_('Выберите варианты досуга'), 
+                  }
+        help_texts = {'hotel':_(''), 
+                      'checkin_date':_(''), 
+                      'checkout_date':_(''), 
+                      'entertaiments':_(''), 
+                      }
+        widgets = {
+            'checkin_date':DateInput(),
+            'checkout_date':DateInput(),
+        }
+        initial = {
+            'checkin_date': datetime.date.today(),
+            'chackout_date': datetime.date.today(),
         }

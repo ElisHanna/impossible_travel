@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import login_required
 from datetime import date
 from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
-from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm
+from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm, CreateTourFormStaff
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import login
@@ -91,6 +91,27 @@ class TourCreate(CreateView):
             else:
                 form = CreateTourFormUser()
             return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})  
+        
+class StaffTourCreate(PermissionRequiredMixin, CreateView):
+    
+    permission_required = 'touring.can_view'
+    model = Tour
+    form_class = CreateTourFormStaff
+    template_name = 'touring/staff_create_tour_form.html'
+    success_url = reverse_lazy('staff-tours')
+        
+    def create_tour_user(self, request):
+        tour = Tour(request)
+        if request.method == 'POST':
+            form = CreateTourFormStaff(request.POST)
+            if form.is_valid():
+                tour.checkin_date = form.cleaned_data['checkin_date']
+                tour.checkout_date = form.cleaned_data['checkout_date']
+                tour.save()
+                return HttpResponseRedirect(reverse('staff-tours'))
+            else:
+                form = CreateTourFormStaff()
+            return render(request, 'touring/staff_create_tour_form.html', {'form':form, 'tour':tour}) 
 
 class TourUpdate(UpdateView):
     model = Tour
@@ -99,11 +120,25 @@ class TourUpdate(UpdateView):
     template_name = 'touring/update_tour_form.html'
     success_url = reverse_lazy('my-tours')
 
+class StaffTourUpdate(PermissionRequiredMixin, UpdateView):
+    
+    permission_required = 'touring.can_view'
+    model = Tour
+    fields = ['tourist', 'hotel', 'checkin_date', 'checkout_date', 'entertaiments']
+    template_name = 'touring/staff_update_tour_form.html'
+    success_url = reverse_lazy('staff-tours')
+
 class TourDelete(DeleteView):
     model = Tour
     template_name = 'touring/tour_confirm_delete.html'
     success_url = reverse_lazy('my-tours')
+
+class StaffTourDelete(PermissionRequiredMixin, DeleteView):
     
+    permission_required = 'touring.can_view'
+    model = Tour
+    template_name = 'touring/staff_tour_confirm_delete.html'
+    success_url = reverse_lazy('staff-tours')
 
 def register_request(request):
     if request.method == 'POST':
