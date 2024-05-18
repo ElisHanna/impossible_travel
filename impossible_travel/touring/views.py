@@ -7,10 +7,9 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
 from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm, CreateTourFormStaff
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import login
 
 def index(request):
@@ -34,28 +33,33 @@ def index(request):
 
 class DirectionListView(generic.ListView):
     model = Direction
+    paginate_by = 12
 
 class DirectionDetailView(generic.DetailView):
     model = Direction
 
 class AreaListView(generic.ListView):
     model = Area
+    paginate_by = 12
 
 class AreaDetailView(generic.DetailView):
     model = Area
 
 class HotelListView(generic.ListView):
     model = Hotel
+    paginate_by = 12
 
 class HotelDetailView(generic.DetailView):
     model = Hotel
 
 class EntertaimentListView(generic.ListView):
     model = Entertaiment
+    paginate_by = 12
 
 class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
     model=Tour
     template_name = 'touring/tour_list_booked_user.html'
+    paginate_by = 5
 
     def get_queryset(self):
         return Tour.objects.filter(tourist=self.request.user).filter(checkout_date__gt=date.today()).order_by('checkin_date')
@@ -63,7 +67,8 @@ class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
 class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     model=Tour
     permission_required = 'touring.can_view'
-    template_name = 'touring/tour_list_staff.html'
+    template_name = 'touring/staff_templates/tour_list_staff.html'
+    paginate_by = 5
 
 class TourCreate(CreateView):
     model = Tour
@@ -97,7 +102,7 @@ class StaffTourCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'touring.can_view'
     model = Tour
     form_class = CreateTourFormStaff
-    template_name = 'touring/staff_create_tour_form.html'
+    template_name = 'touring/staff_templates/staff_create_tour_form.html'
     success_url = reverse_lazy('staff-tours')
         
     def create_tour_user(self, request):
@@ -125,7 +130,7 @@ class StaffTourUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'touring.can_view'
     model = Tour
     fields = ['tourist', 'hotel', 'checkin_date', 'checkout_date', 'entertaiments']
-    template_name = 'touring/staff_update_tour_form.html'
+    template_name = 'touring/staff_templates/staff_update_tour_form.html'
     success_url = reverse_lazy('staff-tours')
 
 class TourDelete(DeleteView):
@@ -137,7 +142,7 @@ class StaffTourDelete(PermissionRequiredMixin, DeleteView):
     
     permission_required = 'touring.can_view'
     model = Tour
-    template_name = 'touring/staff_tour_confirm_delete.html'
+    template_name = 'touring/staff_templates/staff_tour_confirm_delete.html'
     success_url = reverse_lazy('staff-tours')
 
 def register_request(request):
