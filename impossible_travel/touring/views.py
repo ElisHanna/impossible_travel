@@ -86,7 +86,7 @@ class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return Tour.objects.filter(tourist=self.request.user).filter(checkout_date__gt=date.today()).order_by('checkin_date')
+        return Tour.objects.filter(tourist=self.request.user, checkout_date__gt=date.today()).order_by('checkin_date')
     
 class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     """
