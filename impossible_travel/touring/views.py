@@ -33,6 +33,7 @@ def index(request):
 
     return render(request, 'index.html', context=context)
 
+
 class DirectionListView(generic.ListView):
     """
     Список доступных вселенных
@@ -40,11 +41,13 @@ class DirectionListView(generic.ListView):
     model = Direction
     paginate_by = 12
 
+
 class DirectionDetailView(generic.DetailView):
     """
     Детальный просмотр вселенной
     """
     model = Direction
+
 
 class AreaListView(generic.ListView):
     """
@@ -53,11 +56,13 @@ class AreaListView(generic.ListView):
     model = Area
     paginate_by = 12
 
+
 class AreaDetailView(generic.DetailView):
     """
     Детальный просмотр местности
     """
     model = Area
+
 
 class HotelListView(generic.ListView):
     """
@@ -66,11 +71,13 @@ class HotelListView(generic.ListView):
     model = Hotel
     paginate_by = 12
 
+
 class HotelDetailView(generic.DetailView):
     """
     Подробная информация о гостинице
     """
     model = Hotel
+
 
 class EntertaimentListView(generic.ListView):
     """
@@ -78,6 +85,7 @@ class EntertaimentListView(generic.ListView):
     """
     model = Entertaiment
     paginate_by = 12
+
 
 class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
     """
@@ -89,7 +97,8 @@ class BookedToursByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Tour.objects.filter(tourist=self.request.user, checkout_date__gt=date.today()).order_by('checkin_date')
-    
+
+
 class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     """
     Список всех туров всех пользователей (доступно только персоналу)
@@ -98,6 +107,7 @@ class TourListForStaffView(PermissionRequiredMixin, generic.ListView):
     permission_required = 'touring.can_view'
     template_name = 'touring/staff_templates/tour_list_staff.html'
     paginate_by = 5
+
 
 class TourCreate(CreateView):
     """
@@ -128,7 +138,8 @@ class TourCreate(CreateView):
             else:
                 form = CreateTourFormUser()
             return render(request, 'touring/create_tour_form.html', {'form':form, 'tour':tour})  
-        
+
+
 class StaffTourCreate(PermissionRequiredMixin, CreateView):
     """
     Создание тура персоналом для клиента
@@ -153,6 +164,7 @@ class StaffTourCreate(PermissionRequiredMixin, CreateView):
                 form = CreateTourFormStaff()
             return render(request, 'touring/staff_create_tour_form.html', {'form':form, 'tour':tour}) 
 
+
 class TourUpdate(UpdateView):
     """
     Изменение тура клиентом
@@ -162,6 +174,7 @@ class TourUpdate(UpdateView):
     fields = ['hotel', 'checkin_date', 'checkout_date', 'entertaiments']
     template_name = 'touring/update_tour_form.html'
     success_url = reverse_lazy('my-tours')
+
 
 class StaffTourUpdate(PermissionRequiredMixin, UpdateView):
     """
@@ -174,6 +187,7 @@ class StaffTourUpdate(PermissionRequiredMixin, UpdateView):
     template_name = 'touring/staff_templates/staff_update_tour_form.html'
     success_url = reverse_lazy('staff-tours')
 
+
 class TourDelete(DeleteView):
     """
     Удаление тура клиентом
@@ -181,6 +195,7 @@ class TourDelete(DeleteView):
     model = Tour
     template_name = 'touring/tour_confirm_delete.html'
     success_url = reverse_lazy('my-tours')
+
 
 class StaffTourDelete(PermissionRequiredMixin, DeleteView):
     """
@@ -209,6 +224,7 @@ def register_request(request):
     form = NewUserForm()
     return render(request=request, template_name='registration/new_user_registration.html', context={'register_form':form})
 
+
 @login_required
 def profile_edit(request):
     """
@@ -225,6 +241,7 @@ def profile_edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'accounts/profile_edit.html', {'user_form': user_form, 'profile_form':profile_form})
+  
     
 @login_required
 def my_profile(request):

@@ -15,11 +15,13 @@ class EmailInput(forms.EmailInput):
     """
     input_type = 'email'
 
+
 class DateInput(forms.DateInput):
     """
     Класс для подключения виджета
     """
     input_type = 'date'
+
 
 class CreateTourFormUser(ModelForm):
     """
@@ -70,7 +72,8 @@ class CreateTourFormUser(ModelForm):
             'checkin_date': datetime.date.today(),
             'chackout_date': datetime.date.today(),
         }
-    
+
+
 class NewUserForm(UserCreationForm):
     """
     Форма для регистрации нового пользователя
@@ -104,7 +107,8 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
+
 class UserEditForm(forms.ModelForm):
     """
     Изменение содержимого полей модели User
@@ -123,6 +127,7 @@ class UserEditForm(forms.ModelForm):
             'email':EmailInput
         }
 
+
 class ProfileEditForm(forms.ModelForm):
     """
     Изменение содержимого полей модели Profile
@@ -140,6 +145,7 @@ class ProfileEditForm(forms.ModelForm):
         widgets = {
             'date_of_birth': DateInput
         }
+
 
 class CreateTourFormStaff(ModelForm):
     """

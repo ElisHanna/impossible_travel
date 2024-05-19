@@ -19,6 +19,7 @@ class Direction(models.Model):
     def get_absolute_url(self):
         return reverse('direction-detail', args=[str(self.id)])
 
+
 class Area(models.Model):
     """
     Модель местности
@@ -35,6 +36,7 @@ class Area(models.Model):
     def get_absolute_url(self):
         return reverse('area-detail', args=[str(self.id)])
 
+
 class Commodity(models.Model):
     """
     Модель удобств в гостинице
@@ -44,6 +46,7 @@ class Commodity(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Hotel(models.Model):
     """
@@ -105,6 +108,7 @@ class Tour(models.Model):
             total_ents_cost += entertaiment.cost
 
         return self.hotel.cost_per_night * ((self.checkout_date - self.checkin_date).days) + total_ents_cost
+
 
 class Profile(models.Model):
     """
