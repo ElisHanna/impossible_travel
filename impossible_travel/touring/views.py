@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
 from django.views import generic
@@ -6,11 +8,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
-from datetime import date
-from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
-from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm, CreateTourFormStaff
 from django.contrib import messages
 from django.contrib.auth import login
+
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
+from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm, CreateTourFormStaff
 
 def index(request):
     """
@@ -231,11 +233,11 @@ def my_profile(request):
     """
     profile = Profile.objects.get(user = request.user)
     context = {
-                'first_name' : profile.user.first_name,
-                'last_name' : profile.user.last_name,
-                'email' : profile.user.email,
-                'date_of_birth' : profile.date_of_birth,
-                'photo' : profile.photo,
-            }
+        'first_name' : profile.user.first_name,
+        'last_name' : profile.user.last_name,
+        'email' : profile.user.email,
+        'date_of_birth' : profile.date_of_birth,
+        'photo' : profile.photo,
+        }
     return render(request, context=context, template_name='accounts/my_profile.html')
     

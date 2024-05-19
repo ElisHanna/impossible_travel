@@ -2,3 +2,4 @@
 __pycache__/
 impossible_travel/db.sqlite3
 readme.txt
+impossible_travel/impossible_travel/.env

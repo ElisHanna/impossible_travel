@@ -2,8 +2,9 @@
 Регистрация моделей и их отображение в админ-панели
 """
 from django.contrib import admin
-from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
 from django.utils.safestring import mark_safe
+
+from .models import Area, Commodity, Direction, Hotel, Tour , Entertaiment, Profile
 
 admin.site.register(Commodity)
 admin.site.register(Direction)
