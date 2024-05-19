@@ -7,7 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from datetime import date
-from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile
+from .models import Area, Direction, Entertaiment, Hotel, Tour, Profile, User
 from .forms import CreateTourFormUser, NewUserForm, UserEditForm, ProfileEditForm, CreateTourFormStaff
 from django.contrib import messages
 from django.contrib.auth import login
@@ -229,18 +229,13 @@ def my_profile(request):
     """
     Просмотр своего профиля
     """
-    
-    profile = Profile.objects.filter(user=request.user)
-    first_name = profile[0].user.first_name
-    last_name = profile[0].user.last_name
-    email = profile[0].user.email
-    date_of_birth = profile[0].date_of_birth
-    photo = profile[0].photo
-    context = {'first_name' : first_name,
-               'last_name' : last_name,
-               'email' : email,
-               'date_of_birth' : date_of_birth,
-               'photo' : photo,
-               }
+    profile = Profile.objects.get(user = request.user)
+    context = {
+                'first_name' : profile.user.first_name,
+                'last_name' : profile.user.last_name,
+                'email' : profile.user.email,
+                'date_of_birth' : profile.date_of_birth,
+                'photo' : profile.photo,
+            }
     return render(request, context=context, template_name='accounts/my_profile.html')
     
