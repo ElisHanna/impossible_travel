@@ -3,8 +3,6 @@ from django.urls import reverse
 
 from .models import Direction
 
-
-
 class DirectionModelTest(TestCase):
 
     @classmethod
