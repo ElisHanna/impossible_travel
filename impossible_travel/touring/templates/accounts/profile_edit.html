@@ -9,6 +9,6 @@
             {{ user_form.as_p }}
             {{ profile_form.as_p }}
             {% csrf_token %}
-            <p><input type="submit" value="Сохранить изменения"></p>
+            <p><button type="submit" class="btn btn-success">Сохранить изменения</button></p>
         </form>
     {% endblock %}
