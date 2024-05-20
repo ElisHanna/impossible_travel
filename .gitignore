@@ -3,3 +3,5 @@ __pycache__/
 impossible_travel/db.sqlite3
 readme.txt
 impossible_travel/impossible_travel/.env
+impossible_travel/db.sqlite3.01.sql
+impossible_travel.7z
