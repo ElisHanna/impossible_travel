@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>К вашим услугам лучшие гостиницы:</h1>
+    
+        {% if hotel_list %}
+        <ul>
+    
+          {% for hotel in hotel_list %}
+          <li>
+            <a href="{{ hotel.get_absolute_url }}">{{ hotel.name }}</a> 
+            ({{hotel.area.name}}, {{hotel.area.direction.name}}) - <strong>{{hotel.cost_per_night}} имперских кредитов за ночь</strong>
+          </li>
+          {% endfor %}
+    
+        </ul>
+        {% else %}
+          <p>Вселенные закрыты на ремонт</p>
+        {% endif %}
+        
+    {% endblock %}

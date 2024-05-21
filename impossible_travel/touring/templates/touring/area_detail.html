@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>{{ area.name }}</h1>
+        <h4>{{ area.description }}</h4>
+
+        <p> Вы можете остановиться в гостиницах: </p>
+    
+        {% if area.hotel_set.all %}
+        <ul>
+    
+          {% for hotel in area.hotel_set.all %}
+          <li>
+            <a href="{{ hotel.get_absolute_url}}">{{ hotel.name }}</a>
+          </li>
+          {% endfor %}
+   
+        </ul>
+        {% else %}
+          <p>К сожалению, в данной области негде оcтановиться, попытайте удачи в другом месте</p>
+        {% endif %}
+
+        <p>Доступные варианты досуга:</p>
+
+        {% if area.entertaiment_set.all %}
+        <ul>
+    
+          {% for entertaiment in area.entertaiment_set.all %}
+          <li>
+            {{ entertaiment.name }} <br>
+            {{ entertaiment.description}} <br> 
+            Всего за {{ entertaiment.cost }} имперских кредитов!
+          </li>
+          {% endfor %}
+   
+        </ul>
+        {% else %}
+          <p>К сожалению, здесь нечем заняться, попытайте удачи в другом месте</p>
+        {% endif %}
+
+    {% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>Забронированные туры</h1>
+    
+        {% if tour_list %}
+        <ul>
+    
+          {% for tour in tour_list %}
+          <li>
+            <h2>Турист: {{tour.tourist}}</h2> <br>
+            <a href="{% url 'hotel-detail' tour.hotel.pk %}">{{tour.hotel.name}}</a> ({{tour.hotel.area}}), {{tour.checkin_date}} - {{tour.checkout_date}}
+          </li>
+          <h4>Выбранные развлечения:</h4>
+            {% for entertaiments in tour.entertaiments.all %}
+            <li>{{ entertaiments }} {% if not forloop.last %} {% endif %}</li>
+            {% endfor %}
+            <h5>К оплате: {{tour.cost}} имперских кредитов</h5>
+            <a href="{% url 'staff_tour_update' tour.pk %}"><button type="button" class="btn btn-primary" style="margin-right: 50px"> Изменить тур</button></a>
+            <a href="{% url 'staff_tour_delete' tour.pk %}"> <button type="button" class="btn btn-danger" style="margin-right: 50px">Удалить тур </button></a>
+          {% endfor %}
+        </ul>
+    
+        {% else %}
+          <p>На данный момент забронированных туров нет.</p>
+        {% endif %}
+    {% endblock %}

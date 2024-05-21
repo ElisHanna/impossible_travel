@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+    
+    {% block content %}
+        <h1>{{ direction.name }}</h1>
+        <h4>{{ direction.description }}</h4>
+    
+        {% if direction.area_set.all %}
+        <ul>
+    
+          {% for area in direction.area_set.all %}
+          <li>
+            <a href="{{ area.get_absolute_url }}">{{ area.name }}</a>
+          </li>
+          {% endfor %}
+    
+        </ul>
+        {% else %}
+          <p>К сожалению, данная вселенная закрыта на ремонт</p>
+        {% endif %}
+        
+    {% endblock %}
